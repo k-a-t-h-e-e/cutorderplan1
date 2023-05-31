@@ -5,15 +5,10 @@ import lombok.Data;
 @Data
 public class RequestDTO {
     private int[] cut_order_matrix;
-
-    private int A;
-    private int B;
-    private int C;
-    private int D;
-    private int n;
-    private int p;
-    private int q;
-
-
+    private int hmin=0;
+    private int hmax=0;
+    private int gmax=0;
+    private int gmin=0;
+    private int runningCount=40;
 
 }

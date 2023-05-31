@@ -12,25 +12,27 @@ import java.util.List;
 @RestController
 public class Main {
 
-    static int[] cut_order_matrix = {756, 720, 1005, 216, 276, 24};
-    static final int minQuantity = Arrays.stream(cut_order_matrix).min().getAsInt();
-    static final int gmax = 12; // maximum number of garments allocated for a marker
+    static int[] cut_order_matrix = {36,144,72,252,504,192};
+    static int minQuantity = Arrays.stream(cut_order_matrix).min().getAsInt();
+    static  int gmax = 16; // maximum number of garments allocated for a marker
     static final int gmin = 1; // minimum number of garments allocated for a marker
 
     static final int hmax = 300; // maximum number of plies
-    static final int hmin = 10; //minimum number of plies
+    static  int hmin = 10; //minimum number of plies
 
     private static List<List<Individual>> generateAlgorithm(RequestDTO requestDTO){
-        cut_order_matrix = requestDTO.getCut_order_matrix();
-
+        if(requestDTO.getHmin()!=0)
+        hmin = requestDTO.getHmin();
+        if(requestDTO.getGmax()!=0)
+            gmax = requestDTO.getGmax();
         List<List<Individual>> cut_order_plans = new ArrayList<List<Individual>>();
 
         int runningCount = 1;
-        while (runningCount < 1000) {
+        while (runningCount < requestDTO.getRunningCount()) {
             List<Individual> individuals = new ArrayList<Individual>();
             int markercount = 1;
             boolean error = false;
-            cut_order_matrix = new int[]{756, 720, 1005, 216, 276, 24};
+            cut_order_matrix = requestDTO.getCut_order_matrix().clone();
             GeneticAlgorithm ga = new GeneticAlgorithm(100, 0.02, 0.6, 3);
             Population population = ga.initPopulation(6);
 
@@ -111,7 +113,7 @@ public class Main {
             }
             //  System.out.print("Wastage: ");
             for (int i = 0; i < cut_order_matrix.length; i++) {
-                //    System.out.print(cut_order_matrix[i]+" ");
+              //      System.out.print(cut_order_matrix[i]+" ");
             }
             if (!error) {
                 cut_order_plans.add(individuals);
